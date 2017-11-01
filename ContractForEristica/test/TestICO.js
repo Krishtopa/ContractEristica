@@ -7,7 +7,7 @@ contract('Presale',function(accounts){
       it("should mint tokens for investor", function(){
          return Presale.deployed().then(function(instance){
            ContractAddress = instance;
-           return ContractAddress.mintTokens(accounts[2], 867868)
+           return ContractAddress.mintToken(accounts[2], 867868)
          }).then(function(){
            return ContractAddress.balanceOf.call(accounts[2]);
          }).then(function(balance){
@@ -58,13 +58,13 @@ contract('EristicaICO',function(accounts){
                 from: accounts[3],
                 value: 4000000000000000000});
        }).then(function() {
-         return  ContractAddress.ERT.call();
+         return  ContractAddress.ert.call();
        }).then(function(token){
-            ERT = ERT.at(token);
-            return ERT.balanceOf.call(accounts[3]);
+            ert = ERT.at(token);
+            return ert.balanceOf.call(accounts[3]);
          }).then(function(result){
              console.log(result + " current balance of accounts[3]");
-             return ERT.totalSupply.call();
+             return ert.totalSupply.call();
          }).then(function(supply){
            console.log(supply + " current totalSupply");
          });
@@ -78,15 +78,15 @@ contract('EristicaICO',function(accounts){
            return ContractAddress.buyForInvestor(accounts[2], random_int , "txH")
        }).then(function(result) {
          console.log(result);
-         return  ContractAddress.ERT.call()
+         return  ContractAddress.ert.call()
        }).then(function(token){
-            ERT = ERT.at(token);
-            return ERT.balanceOf.call(accounts[2]);
+            ert = ERT.at(token);
+            return ert.balanceOf.call(accounts[2]);
          }).then(function(balance){
              balance = JSON.parse(balance);
              console.log(balance + " balance of accounts[2]");
              assert.isAtLeast(balance, random_int, "tokens weren't sent" )
-             return ERT.totalSupply.call();
+             return ert.totalSupply.call();
          }).then(function(supply){
            console.log(supply + " current totalSupply");
          });
@@ -141,13 +141,13 @@ contract('EristicaICO',function(accounts){
                 from: accounts[3],
                 value: 2000000000000000000});
        }).then(function() {
-         return  ContractAddress.ERT.call();
+         return  ContractAddress.ert.call();
        }).then(function(token){
-            ERT = ERT.at(token);
-            return ERT.balanceOf.call(accounts[3]);
+            ert = ERT.at(token);
+            return ert.balanceOf.call(accounts[3]);
          }).then(function(result){
              console.log(result + " current balance of accounts[3]");
-             return ERT.totalSupply.call();
+             return ert.totalSupply.call();
          }).then(function(supply){
            console.log(supply + " current totalSupply");
          });
@@ -161,15 +161,15 @@ contract('EristicaICO',function(accounts){
            return ContractAddress.buyForInvestor(accounts[1], random_int , "txH")
        }).then(function(result) {
          console.log(result);
-         return  ContractAddress.ERT.call()
+         return  ContractAddress.ert.call()
        }).then(function(token){
-            ERT = ERT.at(token);
-            return ERT.balanceOf.call(accounts[1]);
+            ert = ERT.at(token);
+            return ert.balanceOf.call(accounts[1]);
          }).then(function(balance){
              console.log(balance + " balance of accounts[1]");
              balance = JSON.parse(balance);
-             assert.isAtLeast(balance, 867868, "tokens weren't sent" )
-             return ERT.totalSupply.call();
+             assert.isAtLeast(balance, random_int, "tokens weren't sent" )
+             return ert.totalSupply.call();
          }).then(function(supply){
            console.log(supply + " current totalSupply");
          });
@@ -185,26 +185,11 @@ contract('EristicaICO',function(accounts){
          });
     });
 
-    it("should get bonus correctly", function(){
-        var random_int = randomInteger(1, 10000000);
-        return EristicaICO.deployed().then(
-            function(instance) {
-             ContractAddress = instance;
-             return ContractAddress.getBonus(random_int);
-          }).then(function(result){
-             result = JSON.parse(result);
-             console.log(result + " result of getBonus");
-             var	bonus = Math.floor(random_int * 20 /100);
-             assert.equal(result, bonus, "Bonus isn't correct");
-          });
-
-    });
-
 
     it("should mint tokens for investor", function(){
        return Presale.deployed().then(function(instance){
          ContractAddress = instance;
-         return ContractAddress.mintTokens(accounts[2], 867868)
+         return ContractAddress.mintToken(accounts[2], 867868)
        }).then(function(){
          return ContractAddress.balanceOf.call(accounts[2]);
        }).then(function(balance){
@@ -213,35 +198,20 @@ contract('EristicaICO',function(accounts){
        });
      });
 
-     it("should set address of ICO", function(){
-        return Presale.deployed().then(function(instance){
-          ContractAddress = instance;
-          return EristicaICO.deployed();
-        }).then(function(instance){
-          return instance.address;
-        }).then(function(addressIco){
-          console.log(addressIco);
-          return ContractAddress.setIco(addressIco);
-        }).then(function(){
-          return ContractAddress.ico.call();
-        }).then(function(result){
-          console.log(result);
-        })
-      });
 
-     it("check balance of investor", function(){
-        return Presale.deployed().then(function(instance){
-          ContractAddress = instance;
-          return ContractAddress.balanceOf.call(accounts[2]);
-        }).then(function(balance){
-          console.log(balance);
-        }).then(function(){
-           return EristicaICO.deployed().then(function(instance) {
-            ContractAddress = instance;
-            return ContractAddress.replaceToken(accounts[2]);
-        });
-      });
-    });
+    //  it("check balance of investor", function(){
+    //     return Presale.deployed().then(function(instance){
+    //       ContractAddress = instance;
+    //       return ContractAddress.balanceOf.call(accounts[2]);
+    //     }).then(function(balance){
+    //       console.log(balance);
+    //     }).then(function(){
+    //        return EristicaICO.deployed().then(function(instance) {
+    //         ContractAddress = instance;
+    //         return ContractAddress.replaceToken(accounts[2]);
+    //     });
+    //   });
+    // });
 
 
 

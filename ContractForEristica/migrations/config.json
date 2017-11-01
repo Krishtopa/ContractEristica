@@ -1,0 +1,12 @@
+{
+   "Company": "0x528e0f852af82ad1ccbcaa633c10b6a46bc6e1a3",
+   "BountyFund": "0x528e0f852af82ad1ccbcaa633c10b6a46bc6e1a3",
+   "AdvisorsFund": "0x528e0f852af82ad1ccbcaa633c10b6a46bc6e1a3",
+   "TeamFund": "0x528e0f852af82ad1ccbcaa633c10b6a46bc6e1a3",
+   "ChallengeFund": "0x528e0f852af82ad1ccbcaa633c10b6a46bc6e1a3",
+
+   "Manager": "0x528e0f852af82ad1ccbcaa633c10b6a46bc6e1a3",
+   "Controller_Address1": "0x528e0f852af82ad1ccbcaa633c10b6a46bc6e1a3",
+   "Controller_Address2": "0x528e0f852af82ad1ccbcaa633c10b6a46bc6e1a3",
+   "Controller_Address3": "0x528e0f852af82ad1ccbcaa633c10b6a46bc6e1a3"
+}
