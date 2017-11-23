@@ -2,21 +2,21 @@ const ERT = artifacts.require("ERT.sol");
 const EristicaICO = artifacts.require("EristicaICO.sol");
 const Presale = artifacts.require("Presale.sol");
 
-contract('Presale', function(accounts) {
-  var ContractAddress;
-
-  it("should mint tokens for investor", function() {
-    return Presale.deployed().then(function(instance) {
-      ContractAddress = instance;
-      return ContractAddress.mintToken(accounts[2], 867868)
-    }).then(function() {
-      return ContractAddress.balanceOf.call(accounts[2]);
-    }).then(function(balance) {
-      console.log(balance);
-      assert.equal(balance, 867868, "Function doesn't work");
-    });
-  });
-});
+// contract('Presale', function(accounts) {
+//   var ContractAddress;
+//
+//   it("should mint tokens for investor", function() {
+//     return Presale.deployed().then(function(instance) {
+//       ContractAddress = instance;
+//       return ContractAddress.mintToken(accounts[2], 867868)
+//     }).then(function() {
+//       return ContractAddress.balanceOf.call(accounts[2]);
+//     }).then(function(balance) {
+//       console.log(balance);
+//       assert.equal(balance, 867868, "Function doesn't work");
+//     });
+//   });
+// });
 
 contract('EristicaICO', function(accounts) {
   function randomInteger(min, max) {
@@ -284,32 +284,45 @@ contract('EristicaICO', function(accounts) {
   it("should mint tokens for investor", function() {
     return Presale.deployed().then(function(instance) {
       ContractAddress = instance;
-      return ContractAddress.mintToken(accounts[2], 867868)
+      return ContractAddress.mintToken(accounts[8], 55555)
     }).then(function() {
-      return ContractAddress.balanceOf.call(accounts[2]);
+      return ContractAddress.balanceOf.call(accounts[8]);
     }).then(function(balance) {
+      balance = JSON.parse(balance);
       console.log(balance);
-      assert.equal(balance, 867868, "Function doesn't work");
+      assert.equal(balance, 55555, "Function doesn't work");
     });
   });
 
+  it("should withdraw ownership", function() {
+    return Presale.deployed().then(function(instance) {
+      ContractAddress = instance;
+      console.log(EristicaICO.address);
+      return ContractAddress.transferOwnership(EristicaICO.address)
+    });
+  });
 
-  //  it("check balance of investor", function(){
-  //     return Presale.deployed().then(function(instance){
-  //       ContractAddress = instance;
-  //       return ContractAddress.balanceOf.call(accounts[2]);
-  //     }).then(function(balance){
-  //       console.log(balance);
-  //     }).then(function(){
-  //        return EristicaICO.deployed().then(function(instance) {
-  //         ContractAddress = instance;
-  //         return ContractAddress.replaceToken(accounts[2]);
-  //     });
-  //   });
-  // });
+  it("should replace tokens", function() {
+    return EristicaICO.deployed().then(function(instance) {
+      ContractAddress = instance;
+      return ContractAddress.replaceToken(accounts[8], {
+        from: accounts[0]
+      })
+    }).then(function(result) {
+      return ContractAddress.ert.call()
+    }).then(function(token) {
+      ert = ERT.at(token);
+      return ert.balanceOf.call(accounts[8]);
+    }).then(function(balance) {
+      console.log(balance + " balance of accounts[8]");
+      balance = JSON.parse(balance);
+      assert.equal(balance, 55555, "tokens weren't sent")
+      return ert.totalSupply.call();
+    }).then(function(supply) {
+      console.log(supply + " current totalSupply");
+    });
 
-
-
+  });
 
   it("should finish ICO", function() {
     return EristicaICO.deployed().then(function(instance) {
