@@ -92,10 +92,10 @@ contract EristicaICO {
     modifier managerOnly { require(msg.sender == Manager); _; }
     modifier controllersOnly { require((msg.sender == Controller_Address1) || (msg.sender == Controller_Address2) || (msg.sender == Controller_Address3)); _; }
 
-    uint bountyPart = 15; // 1.5% of TotalSupply for BountyFund
-    uint advisorsPart = 389; //3,89% of TotalSupply for AdvisorsFund
-    uint teamPart = 10; //10% of TotalSupply for TeamFund
-    uint challengePart = 10; //10% of TotalSupply for ChallengeFund
+    uint bountyPart = 1500; // 1.5% of TotalSupply for BountyFund
+    uint advisorsPart = 3890; //3,89% of TotalSupply for AdvisorsFund
+    uint teamPart = 1000; //10% of TotalSupply for TeamFund
+    uint challengePart = 1000; //10% of TotalSupply for ChallengeFund
     uint icoAndPOfPart = 7461; // 74,61% of TotalSupply for PublicICO and PrivateOffer
     enum StatusICO { Created, Started, Paused, Finished }
     StatusICO statusICO = StatusICO.Created;
@@ -146,10 +146,10 @@ contract EristicaICO {
        uint totalAmount = alreadyMinted * 10000 / icoAndPOfPart;
 
 
-       ert.mint(BountyFund, bountyPart * totalAmount / 1000); // 1.5% for Bounty
+       ert.mint(BountyFund, bountyPart * totalAmount / 10000); // 1.5% for Bounty
        ert.mint(AdvisorsFund, advisorsPart * totalAmount / 10000); // 3.89% for Advisors
-       ert.mint(TeamFund, teamPart * totalAmount / 100); // 10% for Eristica team
-       ert.mint(ChallengeFund, challengePart * totalAmount / 100); // 10% for Challenge Fund
+       ert.mint(TeamFund, teamPart * totalAmount / 10000); // 10% for Eristica team
+       ert.mint(ChallengeFund, challengePart * totalAmount / 10000); // 10% for Challenge Fund
 
        ert.defrost();
 

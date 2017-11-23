@@ -16,6 +16,7 @@ contract('Presale',function(accounts){
          });
        });
 });
+
 contract('EristicaICO',function(accounts){
   function randomInteger(min, max) {
       var rand = min - 0.5 + Math.random() * (max - min + 1)
@@ -39,9 +40,50 @@ contract('EristicaICO',function(accounts){
 
     });
 
+    it("shouldn't send tokens, when investor sends ether to contract", function(){
+
+          EristicaICO.deployed().then(function(instance) {
+           ContractAddress = instance;
+           return ContractAddress.sendTransaction({
+                from: accounts[3],
+                value: 4000000000000000000});
+       }).then(function() {
+         assert(false, "shouldn't send tokens when ico isn't started")
+       }).catch(function(e) {
+         assert(true, "shouldn't send tokens when ico isn't started");
+     });
+    });
+
+    it("shouldn't buy tokens for investor who paid in other cryptos", function(){
+       var random_int = randomInteger(100000, 10000000);
+
+          EristicaICO.deployed().then(function(instance) {
+           ContractAddress = instance;
+           return ContractAddress.buyForInvestor(accounts[1], random_int , "txH")
+         }).then(function() {
+           assert(false, "shouldn't buy tokens for investor when ico isn't started")
+         }).catch(function(e) {
+           assert(true, "shouldn't buy tokens for investor when ico isn't started");
+       });
+    });
+
+    it("shouldn't withdraw ether", function(){
+
+          EristicaICO.deployed().then(function(instance) {
+            ContractAddress = instance;
+            return ContractAddress.withdrawEther(web3.toWei(1, "ether"))
+          }).then(function() {
+             console.log('then');
+             assert(false, "shouldn't withdraw before finishIco");
+          }).catch(function(e) {
+             console.log('catch');
+             console.log(e);
+             assert(true, "shouldn't withdraw before finishIco");
+          });
+    });
 
     it("should start ICO", function(){
-       return EristicaICO.deployed().then(function(instance) {
+        EristicaICO.deployed().then(function(instance) {
             ContractAddress = instance;
             return ContractAddress.startIco();
         }).then(function(tx) {
@@ -75,7 +117,7 @@ contract('EristicaICO',function(accounts){
        var random_int = randomInteger(100000, 10000000);
        return EristicaICO.deployed().then(function(instance) {
            ContractAddress = instance;
-           return ContractAddress.buyForInvestor(accounts[2], random_int , "txH")
+           return ContractAddress.buyForInvestor(accounts[2], random_int , "txH", {from: accounts[1]})
        }).then(function(result) {
          console.log(result);
          return  ContractAddress.ert.call()
@@ -93,10 +135,23 @@ contract('EristicaICO',function(accounts){
 
     });
 
+    it("shouldn't withdraw ether", function(){
 
+          EristicaICO.deployed().then(function(instance) {
+            ContractAddress = instance;
+            return ContractAddress.withdrawEther(web3.toWei(1, "ether"))
+          }).then(function() {
+             console.log('then');
+             assert(false, "shouldn't withdraw before finishIco");
+          }).catch(function(e) {
+             console.log('catch');
+             console.log(e);
+             assert(true, "shouldn't withdraw before finishIco");
+          });
+    });
 
     it("should pause ICO", function(){
-       return EristicaICO.deployed().then(function(instance) {
+        EristicaICO.deployed().then(function(instance) {
             ContractAddress = instance;
             return ContractAddress.pauseIco();
         }).then(function(result) {
@@ -121,9 +176,50 @@ contract('EristicaICO',function(accounts){
 
     });
 
+    it("shouldn't send tokens, when investor sends ether to contract", function(){
+
+          return EristicaICO.deployed().then(function(instance) {
+           ContractAddress = instance;
+           return ContractAddress.sendTransaction({
+                from: accounts[3],
+                value: 4000000000000000000});
+       }).then(function() {
+         assert(false, "shouldn't send tokens when ico isn't started")
+       }).catch(function(e) {
+         assert(true, "shouldn't send tokens when ico isn't started");
+     });
+    });
+
+    it("shouldn't buy tokens for investor who paid in other cryptos", function(){
+       var random_int = randomInteger(100000, 10000000);
+
+          return EristicaICO.deployed().then(function(instance) {
+           ContractAddress = instance;
+           return ContractAddress.buyForInvestor(accounts[1], random_int , "txH")
+         }).then(function() {
+           assert(false, "shouldn't buy tokens for investor when ico isn't started")
+         }).catch(function(e) {
+           assert(true, "shouldn't buy tokens for investor when ico isn't started");
+       });
+    });
+
+    it("shouldn't withdraw ether", function(){
+
+          return EristicaICO.deployed().then(function(instance) {
+            ContractAddress = instance;
+            return ContractAddress.withdrawEther(web3.toWei(1, "ether"))
+          }).then(function() {
+             console.log('then');
+             assert(false, "shouldn't withdraw before finishIco");
+          }).catch(function(e) {
+             console.log('catch');
+             console.log(e);
+             assert(true, "shouldn't withdraw before finishIco");
+          });
+    });
 
     it("should start ICO", function(){
-       return EristicaICO.deployed().then(function(instance) {
+        return EristicaICO.deployed().then(function(instance) {
             ContractAddress = instance;
             return ContractAddress.startIco();
         }).then(function(result) {
@@ -158,7 +254,7 @@ contract('EristicaICO',function(accounts){
        var random_int = randomInteger(100000, 10000000);
        return EristicaICO.deployed().then(function(instance) {
            ContractAddress = instance;
-           return ContractAddress.buyForInvestor(accounts[1], random_int , "txH")
+           return ContractAddress.buyForInvestor(accounts[1], random_int , "txH", {from: accounts[1]})
        }).then(function(result) {
          console.log(result);
          return  ContractAddress.ert.call()
@@ -175,16 +271,6 @@ contract('EristicaICO',function(accounts){
          });
 
     });
-
-    it("address of presale", function(){
-       return EristicaICO.deployed().then(function(instance) {
-           ContractAddress = instance;
-         return  ContractAddress.presale.call()
-       }).then(function(token){
-          console.log(token);
-         });
-    });
-
 
     it("should mint tokens for investor", function(){
        return Presale.deployed().then(function(instance){
@@ -215,6 +301,7 @@ contract('EristicaICO',function(accounts){
 
 
 
+
     it("should finish ICO", function(){
        return EristicaICO.deployed().then(function(instance) {
             ContractAddress = instance;
@@ -224,6 +311,34 @@ contract('EristicaICO',function(accounts){
             assert.isOk(result.receipt);
         });
     });
+
+    it("shouldn't send tokens, when investor sends ether to contract", function(){
+
+          return EristicaICO.deployed().then(function(instance) {
+           ContractAddress = instance;
+           return ContractAddress.sendTransaction({
+                from: accounts[3],
+                value: 4000000000000000000});
+       }).then(function() {
+         assert(false, "shouldn't send tokens when ico isn't started")
+       }).catch(function(e) {
+         assert(true, "shouldn't send tokens when ico isn't started");
+     });
+    });
+
+    it("shouldn't buy tokens for investor who paid in other cryptos", function(){
+       var random_int = randomInteger(100000, 10000000);
+
+          return EristicaICO.deployed().then(function(instance) {
+           ContractAddress = instance;
+           return ContractAddress.buyForInvestor(accounts[1], random_int , "txH")
+         }).then(function() {
+           assert(false, "shouldn't buy tokens for investor when ico isn't started")
+         }).catch(function(e) {
+           assert(true, "shouldn't buy tokens for investor when ico isn't started");
+       });
+    });
+
 
     it("should withdraw ether", function(){
        return EristicaICO.deployed().then(function(instance) {
