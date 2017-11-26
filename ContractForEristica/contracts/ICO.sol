@@ -72,8 +72,8 @@ contract EristicaICO {
     modifier managerOnly { require(msg.sender == Manager); _; }
     modifier controllersOnly { require((msg.sender == Controller_Address1) || (msg.sender == Controller_Address2) || (msg.sender == Controller_Address3)); _; }
 
-    uint bountyPart = 1500; // 1.5% of TotalSupply for BountyFund
-    uint advisorsPart = 3890; //3,89% of TotalSupply for AdvisorsFund
+    uint bountyPart = 150; // 1.5% of TotalSupply for BountyFund
+    uint advisorsPart = 389; //3,89% of TotalSupply for AdvisorsFund
     uint teamPart = 1000; //10% of TotalSupply for TeamFund
     uint challengePart = 1000; //10% of TotalSupply for ChallengeFund
     uint icoAndPOfPart = 7461; // 74,61% of TotalSupply for PublicICO and PrivateOffer
